@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import MessageWindow from './components/MessageWindow';
+import Home from './pages/Home';
+import Board from './pages/Board';
+import PostDetail from './pages/PostDetail';
+import NewPost from './pages/NewPost';
+import MyPage from './pages/MyPage';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [section, setSection] = useState('home');
+    const [selectedProfile, setSelectedProfile] = useState(null);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [isMessageOpen, setIsMessageOpen] = useState(false);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const toggleMessage = () => setIsMessageOpen(!isMessageOpen);
+
+    const handleViewProfile = (profile) => {
+        setSelectedProfile(profile);
+        setSection('profile');
+    };
+
+    const handleViewPost = (post) => {
+        setSelectedPost(post);
+        setSection('postDetail');
+    };
+
+    return (
+        <div className="App">
+            <Navbar onSectionChange={setSection} />
+            <div className="message-icon" onClick={toggleMessage}>💬</div>
+            {isMessageOpen && <MessageWindow />}
+            {section === 'home' && <Home onViewProfile={handleViewProfile} />}
+            {section === 'board' && <Board onViewPost={handleViewPost} />}
+            {section === 'postDetail' && selectedPost && (
+                <PostDetail post={selectedPost} onBack={() => setSection('board')} />
+            )}
+            {section === 'newPost' && <NewPost onBack={() => setSection('board')} />}
+            {section === 'myPage' && <MyPage />}
+            {section === 'profile' && selectedProfile && (
+                <ProfileSection profile={selectedProfile} onBack={() => setSection('home')} />
+            )}
+        </div>
+    );
 }
 
-export default App
+export default App;

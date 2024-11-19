@@ -35,3 +35,42 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Java 관련
+*.class
+*.jar
+*.war
+*.ear
+
+# Eclipse/STS
+.project
+.classpath
+.settings/
+.apt_generated/
+.factorypath/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle
+.gradle/
+build/
+!gradle-wrapper.jar
+
+# 로그와 임시 파일
+*.log
+*.tmp
+hs_err_pid*
+*.swp
+
+# 운영체제 파일
+.DS_Store
+Thumbs.db
+desktop.ini
