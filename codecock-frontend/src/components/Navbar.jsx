@@ -1,21 +1,15 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
-function Navbar({ onSectionChange }) {
-    return (
-        <nav className="navbar">
-            <div className="navbar-logo">
-                <button onClick={() => onSectionChange('home')}>CodeCompanion</button>
-            </div>
-            <div className="navbar-links">
-                <button onClick={() => onSectionChange('board')}>게시판</button>
-                <button onClick={() => onSectionChange('myPage')}>My Page</button>
-            </div>
-        </nav>
-    );
-}
-
-Navbar.propTypes = {
-    onSectionChange: PropTypes.func.isRequired,
-};
+const Navbar = ({ isLoggedIn, toggleLogin, showSection }) => (
+    <nav className="navbar">
+        <div className="navbar-logo">CodeCompanion</div>
+        <div className="navbar-links">
+            <button onClick={() => showSection('home')}>홈</button>
+            <button onClick={() => showSection('board')}>게시판</button>
+            <button onClick={() => showSection('myPage')}>My Page</button>
+            <button onClick={toggleLogin}>{isLoggedIn ? '로그아웃' : '로그인'}</button>
+        </div>
+    </nav>
+);
 
 export default Navbar;

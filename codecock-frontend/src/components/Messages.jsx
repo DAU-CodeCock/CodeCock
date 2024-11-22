@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import React from 'react';
 
-function MessageWindow() {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-
+const Messages = ({ messages, message, setMessage, setMessages }) => {
     const handleSendMessage = () => {
-        if (message.trim()) {
-            setMessages((prev) => [...prev, message]);
+        if (message) {
+            setMessages([...messages, message]);
             setMessage('');
         }
     };
@@ -25,9 +22,11 @@ function MessageWindow() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="메시지를 입력하세요"
             />
-            <button onClick={handleSendMessage} className="send-button">전송</button>
+            <button onClick={handleSendMessage} className="send-button">
+                전송
+            </button>
         </div>
     );
-}
+};
 
-export default MessageWindow;
+export default Messages;
