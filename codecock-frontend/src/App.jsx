@@ -1,48 +1,37 @@
-import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import MessageWindow from './components/MessageWindow';
-import Home from './pages/Home';
-import Board from './pages/Board';
-import PostDetail from './pages/PostDetail';
-import NewPost from './pages/NewPost';
-import MyPage from './pages/MyPage';
-import './App.css';
+import React, { useState } from "react";
+import Header from "./components/Header";
+import Board from "./components/Board";
+import Main from "./components/Main";
+import Profile from "./components/Profile";
 
-function App() {
-    const [section, setSection] = useState('home');
-    const [selectedProfile, setSelectedProfile] = useState(null);
-    const [selectedPost, setSelectedPost] = useState(null);
-    const [isMessageOpen, setIsMessageOpen] = useState(false);
+import MatchPage from "./components/MatchPage"; // MatchPage 추가
 
-    const toggleMessage = () => setIsMessageOpen(!isMessageOpen);
+const App = () => {
+  const [currentPage, setCurrentPage] = useState("home");
 
-    const handleViewProfile = (profile) => {
-        setSelectedProfile(profile);
-        setSection('profile');
-    };
+  const renderPage = () => {
+    console.log("Current page:", currentPage); // 현재 페이지 값 확인
+    switch (currentPage) {
+      case "home":
+        return <Main />;
+      case "board":
+        return <Board />;
+      case "mypage":
+        return <Profile />;
 
-    const handleViewPost = (post) => {
-        setSelectedPost(post);
-        setSection('postDetail');
-    };
+      case "match":
+        return <MatchPage />; // MatchPage 연결
+      default:
+        return <Main />;
+    }
+  };
 
-    return (
-        <div className="App">
-            <Navbar onSectionChange={setSection} />
-            <div className="message-icon" onClick={toggleMessage}>💬</div>
-            {isMessageOpen && <MessageWindow />}
-            {section === 'home' && <Home onViewProfile={handleViewProfile} />}
-            {section === 'board' && <Board onViewPost={handleViewPost} />}
-            {section === 'postDetail' && selectedPost && (
-                <PostDetail post={selectedPost} onBack={() => setSection('board')} />
-            )}
-            {section === 'newPost' && <NewPost onBack={() => setSection('board')} />}
-            {section === 'myPage' && <MyPage />}
-            {section === 'profile' && selectedProfile && (
-                <ProfileSection profile={selectedProfile} onBack={() => setSection('home')} />
-            )}
-        </div>
-    );
-}
+  return (
+    <div>
+      <Header setCurrentPage={setCurrentPage} />
+      {renderPage()}
+    </div>
+  );
+};
 
 export default App;
