@@ -9,7 +9,7 @@ const Main = () => {
   return (
     <div className="main-container">
       <header className="main-header">
-        <h1 className="main-title">CodeConnect</h1>
+        <h1 className="main-title">CodeCock</h1>
         <p className="main-subtitle">Unite. Learn. Grow.</p>
         <button className="main-button" onClick={handleLogin}>
           시작하기
@@ -17,7 +17,7 @@ const Main = () => {
       </header>
 
       <section className="main-features">
-        <h2>Why CodeConnect?</h2>
+        <h2>Why CodeCock?</h2>
         <div className="features-grid">
           <div className="feature-card">
             <h3>Connect</h3>
@@ -35,7 +35,7 @@ const Main = () => {
       </section>
 
       <footer className="main-footer">
-        <p>© 2024 코드커넥트. 모든 권리 보유.</p>
+        <p>© 2024 CodeCock</p>
       </footer>
 
       <div className="background-animation">

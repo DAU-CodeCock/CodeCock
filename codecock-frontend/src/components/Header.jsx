@@ -39,7 +39,7 @@ const Header = ({ setCurrentPage }) => {
         onMouseOver={(e) => (e.target.style.color = "#61dafb")}
         onMouseOut={(e) => (e.target.style.color = "white")}
       >
-        My Website
+        CodeCock
       </h1>
 
       {/* 중앙: 네비게이션 메뉴 */}
