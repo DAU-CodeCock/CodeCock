@@ -4,10 +4,11 @@ import com.codecock.codecock_backend.dto.users.UserDTO;
 import com.codecock.codecock_backend.entity.User;
 import com.codecock.codecock_backend.repository.UserRepository;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.codecock.codecock_backend.service.security.InvalidCredentialsException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -17,8 +18,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordService passwordService;
-    private final AuthenticationService authenticationService;
+
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
@@ -30,20 +30,23 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDTO checkUserById(String user_id) {
-        Optional<User> user = userRepository.findByUserId(user_id);
+    public UserDTO checkUserById(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
         return user.map(UserDTO::fromEntity).orElse(null);
     }
 
 
 
     @Transactional
-    public UserDTO updateUser(Integer userNum, UserDTO userDTO) {
-        Optional<User> existingUser = userRepository.findById(userNum);
+    public UserDTO updateUser(Integer userId, UserDTO userDTO) {
+        Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isPresent()) {
             User user = existingUser.get();
-            user.setUserEmail(userDTO.getUserEmail());
-            user.setUserState(userDTO.getUserState());
+            user.setPassword(user.getPassword());
+            user.setEmail(userDTO.getEmail());
+            user.setPhone(userDTO.getPhone());
+            user.setUserStatus(userDTO.getUserStatus());
+            user.setUpdatedAt(LocalDateTime.now());
             User updatedUser = userRepository.save(user);
             return UserDTO.fromEntity(updatedUser);
         }
@@ -51,22 +54,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUserPassword(Integer userNum, String newPassword, String token) {
-        Optional<User> existingUser = userRepository.findById(userNum);
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            authenticationService.validateToken(token, user.getUserId());
-            user.setPassword(passwordService.encodePassword(newPassword));
-            User updatedUser = userRepository.save(user);
-            return UserDTO.fromEntity(updatedUser);
-        }
-        throw new InvalidCredentialsException("User not found or invalid credentials");
-    }
-
-    @Transactional
-    public boolean deleteUser(Integer userNum) {
-        if (userRepository.existsById(userNum)) {
-            userRepository.deleteById(userNum);
+    public boolean deleteUser(Integer userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;
