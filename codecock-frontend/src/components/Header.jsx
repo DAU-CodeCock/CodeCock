@@ -1,36 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { auth, provider, signInWithPopup, signOut } from "../firebase";
+import React, { useState } from "react";
 
 const Header = ({ setCurrentPage }) => {
   const [user, setUser] = useState(null);
 
-  const handleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-    } catch (error) {
-      console.error("Google Login Error:", error);
-    }
+  // 가상 로그인 핸들러
+  const handleLogin = () => {
+    const mockUser = {
+      displayName: "Guest User",
+    };
+    setUser(mockUser);
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (error) {
-      console.error("Logout Error:", error);
-    }
+  // 가상 로그아웃 핸들러
+  const handleLogout = () => {
+    setUser(null);
   };
 
   return (
@@ -56,7 +39,7 @@ const Header = ({ setCurrentPage }) => {
         onMouseOver={(e) => (e.target.style.color = "#61dafb")}
         onMouseOut={(e) => (e.target.style.color = "white")}
       >
-        My Website
+        CodeCock
       </h1>
 
       {/* 중앙: 네비게이션 메뉴 */}
@@ -100,7 +83,6 @@ const Header = ({ setCurrentPage }) => {
               display: "flex",
               alignItems: "center",
               gap: "10px",
-              cursor: "pointer",
             }}
           >
             <p
@@ -147,7 +129,7 @@ const Header = ({ setCurrentPage }) => {
             onMouseOver={(e) => (e.target.style.backgroundColor = "#4dabdb")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#61dafb")}
           >
-            Login with Google
+            Login
           </button>
         )}
       </div>

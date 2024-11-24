@@ -7,7 +7,7 @@ const initialMatches = [
     description: "Learn React from scratch!",
     role: "Mentor",
     language: "JavaScript",
-    teachingMethod: "Online",
+    teachingMethod: "수업형",
     detailedDescription:
       "This is a course for complete beginners in React. We'll cover components, state, props, and hooks.",
     currentApplications: 1,
@@ -19,7 +19,7 @@ const initialMatches = [
     description: "Deep dive into Python!",
     role: "Mentee",
     language: "Python",
-    teachingMethod: "Offline",
+    teachingMethod: "프로젝트형",
     detailedDescription:
       "This workshop is for those who are already familiar with Python and want to learn advanced topics like multi-threading, async, and more.",
     currentApplications: 3,
@@ -31,7 +31,7 @@ const initialMatches = [
     description: "Become a full-stack developer!",
     role: "Mentor",
     language: "JavaScript",
-    teachingMethod: "Hybrid",
+    teachingMethod: "기타",
     detailedDescription:
       "This bootcamp covers both front-end and back-end technologies, including React, Node.js, and databases.",
     currentApplications: 2,
@@ -177,6 +177,7 @@ const MatchPage = () => {
                 <option value="">All Languages</option>
                 <option value="JavaScript">JavaScript</option>
                 <option value="Python">Python</option>
+                <option value="C">C</option>
               </select>
               <select
                 name="teachingMethod"
@@ -185,9 +186,9 @@ const MatchPage = () => {
                 style={{ padding: "10px", flex: 1 }}
               >
                 <option value="">All Methods</option>
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-                <option value="Hybrid">Hybrid</option>
+                <option value="수업형">수업형</option>
+                <option value="프로젝트형">프로젝트형</option>
+                <option value="기타">기타</option>
               </select>
             </div>
 
@@ -310,6 +311,7 @@ const MatchPage = () => {
               <option value="">Select Language</option>
               <option value="JavaScript">JavaScript</option>
               <option value="Python">Python</option>
+              <option value="C">C</option>
             </select>
           </label>
           <label>
@@ -321,9 +323,9 @@ const MatchPage = () => {
               style={{ display: "block", marginBottom: "10px" }}
             >
               <option value="">Select Method</option>
-              <option value="Online">Online</option>
-              <option value="Offline">Offline</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="수업형">수업형</option>
+              <option value="프로젝트형">프로젝트형</option>
+              <option value="기타">기타</option>
             </select>
           </label>
           <label>

@@ -1,21 +1,261 @@
 import React, { useState } from "react";
-import Message from './Message';
 
-const defaultApplications = [
-  {
-    id: 1,
-    name: "Mentor John",
-    description: "React 및 JavaScript 멘토링 신청",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    name: "Mentee Jane",
-    description: "Frontend 프로젝트 협업 신청",
-    status: "Approved",
-  },
-];
+// MessagePopup Component
+const MessagePopup = (chatPartner) => {
+  const popupWindow = window.open(
+    "",
+    "_blank",
+    "width=600,height=600,resizable,scrollbars"
+  );
 
+  if (popupWindow) {
+    popupWindow.document.write(`
+      <html>
+        <head>
+          <title>Chat with ${chatPartner}</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #f9f9f9;
+            }
+            .header {
+              background-color: #61dafb;
+              color: white;
+              padding: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .chat {
+              flex: 1;
+              padding: 10px;
+              overflow-y: auto;
+              height: calc(100% - 150px);
+            }
+            .footer {
+              display: flex;
+              gap: 10px;
+              padding: 10px;
+              border-top: 1px solid #ddd;
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+            }
+            .footer input {
+              flex: 1;
+              padding: 5px;
+              border: 1px solid #ddd;
+              border-radius: 3px;
+            }
+            .footer button {
+              padding: 5px 10px;
+              background-color: #61dafb;
+              color: white;
+              border: none;
+              border-radius: 3px;
+              cursor: pointer;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            Chat with ${chatPartner}
+            <button id="closeButton" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
+          </div>
+          <div class="chat" id="chatContainer"></div>
+          <div class="footer">
+            <input type="text" id="messageInput" placeholder="Type a message..." />
+            <button id="sendButton">Send</button>
+            <button id="micToggleButton">Mic On</button>
+            <button id="screenShareButton">Share Screen</button>
+          </div>
+        </body>
+      </html>
+    `);
+
+    popupWindow.onload = () => {
+      const chatContainer = popupWindow.document.getElementById("chatContainer");
+      const messageInput = popupWindow.document.getElementById("messageInput");
+      const sendButton = popupWindow.document.getElementById("sendButton");
+      const micToggleButton = popupWindow.document.getElementById("micToggleButton");
+      const screenShareButton = popupWindow.document.getElementById("screenShareButton");
+      const closeButton = popupWindow.document.getElementById("closeButton");
+
+      let isMicOn = true;
+      let screenStream = null;
+
+      sendButton.onclick = () => {
+        const message = messageInput.value.trim();
+        if (message) {
+          const messageElement = popupWindow.document.createElement("div");
+          messageElement.textContent = `Me: ${message}`;
+          chatContainer.appendChild(messageElement);
+          messageInput.value = "";
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+      };
+
+      micToggleButton.onclick = () => {
+        isMicOn = !isMicOn;
+        micToggleButton.textContent = isMicOn ? "Mic On" : "Mic Off";
+      };
+
+      const startScreenSharing = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+          screenStream = stream;
+
+          const videoElement = popupWindow.document.createElement("video");
+          videoElement.srcObject = stream;
+          videoElement.autoplay = true;
+          videoElement.style.width = "100%";
+          videoElement.style.marginTop = "10px";
+
+          chatContainer.appendChild(videoElement);
+
+          stream.getVideoTracks()[0].onended = () => {
+            stopScreenSharing();
+          };
+
+          screenShareButton.textContent = "Stop Sharing";
+        } catch (error) {
+          console.error("Screen sharing error:", error);
+        }
+      };
+
+      const stopScreenSharing = () => {
+        if (screenStream) {
+          screenStream.getTracks().forEach((track) => track.stop());
+          screenStream = null;
+          screenShareButton.textContent = "Share Screen";
+        }
+      };
+
+      screenShareButton.onclick = () => {
+        if (!screenStream) {
+          startScreenSharing();
+        } else {
+          stopScreenSharing();
+        }
+      };
+
+      closeButton.onclick = () => {
+        if (screenStream) stopScreenSharing();
+        popupWindow.close();
+      };
+    };
+  } else {
+    alert("Popup was blocked. Please allow popups for this site.");
+  }
+};
+
+// Applications Component
+const Applications = ({ applications, onApprove, onReject, onMentoringEnd, uploadedFiles, onFileUpload, onFileSubmit }) => {
+  return (
+    <div>
+      <h3>Applications</h3>
+      {applications.map((app) => (
+        <div
+          key={app.id}
+          style={{
+            border: "1px solid #ddd",
+            padding: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <p>
+            <strong>{app.name}</strong>
+          </p>
+          <p>Status: {app.status}</p>
+          {app.status === "Pending" && (
+            <div>
+              <button
+                onClick={() => onApprove(app.id)}
+                style={{
+                  padding: "5px 10px",
+                  backgroundColor: "green",
+                  color: "white",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => onReject(app.id)}
+                style={{
+                  padding: "5px 10px",
+                  backgroundColor: "red",
+                  color: "white",
+                  border: "none",
+                }}
+              >
+                Reject
+              </button>
+            </div>
+          )}
+          {app.status === "Approved" && (
+            <div>
+              <button
+                onClick={() => MessagePopup(app.name)}
+                style={{
+                  padding: "5px 10px",
+                  backgroundColor: "blue",
+                  color: "white",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+              >
+                Message
+              </button>
+              {!app.mentoringEnded && (
+                <button
+                  onClick={() => onMentoringEnd(app.id)}
+                  style={{
+                    padding: "5px 10px",
+                    backgroundColor: "orange",
+                    color: "white",
+                    border: "none",
+                  }}
+                >
+                  End Mentoring
+                </button>
+              )}
+              {app.mentoringEnded && (
+                <div>
+                  <input
+                    type="file"
+                    onChange={(e) => onFileUpload(app.id, e)}
+                    style={{ marginTop: "10px" }}
+                  />
+                  <button
+                    onClick={() => onFileSubmit(app.id)}
+                    style={{
+                      padding: "5px 10px",
+                      backgroundColor: "green",
+                      color: "white",
+                      border: "none",
+                      marginTop: "10px",
+                    }}
+                  >
+                    Upload
+                  </button>
+                  {uploadedFiles[app.id] && (
+                    <p>Uploaded File: {uploadedFiles[app.id]}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// MentorTestPage Component
 const MentorTestPage = ({ onTestComplete }) => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -122,15 +362,20 @@ const MentorTestPage = ({ onTestComplete }) => {
   );
 };
 
+// Profile Component
 const Profile = () => {
   const [formData, setFormData] = useState({
     displayName: "Default User",
     email: "defaultuser@example.com",
     role: "mentee",
+    bio: "This is a default bio.",
   });
   const [editMode, setEditMode] = useState(false);
-  const [applications, setApplications] = useState(defaultApplications);
-  const [activeChat, setActiveChat] = useState(null);
+  const [applications, setApplications] = useState([
+    { id: 1, name: "John Doe", status: "Pending", mentoringEnded: false },
+    { id: 2, name: "Jane Smith", status: "Pending", mentoringEnded: false },
+  ]);
+  const [uploadedFiles, setUploadedFiles] = useState({});
   const [isMentorApproved, setIsMentorApproved] = useState(false);
   const [showTestPage, setShowTestPage] = useState(false);
 
@@ -149,6 +394,45 @@ const Profile = () => {
       setFormData((prev) => ({ ...prev, role: "mentor" }));
     } else {
       alert("Test failed. You cannot become a mentor at this time.");
+    }
+  };
+
+  const handleApprove = (id) => {
+    setApplications((prev) =>
+      prev.map((app) =>
+        app.id === id ? { ...app, status: "Approved" } : app
+      )
+    );
+  };
+
+  const handleReject = (id) => {
+    setApplications((prev) =>
+      prev.map((app) =>
+        app.id === id ? { ...app, status: "Rejected" } : app
+      )
+    );
+  };
+
+  const handleMentoringEnd = (id) => {
+    setApplications((prev) =>
+      prev.map((app) =>
+        app.id === id ? { ...app, mentoringEnded: true } : app
+      )
+    );
+  };
+
+  const handleFileUpload = (id, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedFiles((prev) => ({ ...prev, [id]: file.name }));
+    }
+  };
+
+  const handleFileSubmit = (id) => {
+    if (uploadedFiles[id]) {
+      alert(`Mentoring for ${applications.find((app) => app.id === id).name} has been completed with file "${uploadedFiles[id]}"!`);
+    } else {
+      alert("Please upload a file before submitting.");
     }
   };
 
@@ -203,6 +487,25 @@ const Profile = () => {
                 }}
               />
             </label>
+            <label style={{ display: "block", marginBottom: "10px" }}>
+              Bio:
+              <input
+                type="text"
+                value={formData.bio}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    bio: e.target.value,
+                  }))
+                }
+                style={{
+                  marginLeft: "10px",
+                  padding: "5px",
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                }}
+              />
+            </label>
             <button
               type="submit"
               style={{
@@ -224,6 +527,9 @@ const Profile = () => {
             </p>
             <p>
               <strong>Email:</strong> {formData.email}
+            </p>
+            <p>
+              <strong>Bio:</strong> {formData.bio}
             </p>
             <button
               onClick={() => setEditMode(true)}
@@ -278,61 +584,18 @@ const Profile = () => {
           </button>
         </div>
       </div>
+      {showTestPage && <MentorTestPage onTestComplete={handleTestCompletion} />}
 
-      {showTestPage && (
-        <MentorTestPage onTestComplete={handleTestCompletion} />
-      )}
-
-      {/* 애플리케이션 및 메시지 */}
-      {!showTestPage && (
-        <div style={{ marginTop: "40px" }}>
-          <h3>Applications</h3>
-          {applications.length === 0 ? (
-            <p>No applications yet.</p>
-          ) : (
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {applications.map((app) => (
-                <li
-                  key={app.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "15px",
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <p>
-                    <strong>{app.name}</strong>: {app.description}
-                  </p>
-                  <p>Status: {app.status}</p>
-                  {app.status === "Approved" && (
-                    <button
-                      onClick={() => setActiveChat(app.name)}
-                      style={{
-                        backgroundColor: "#61dafb",
-                        color: "white",
-                        border: "none",
-                        padding: "5px 10px",
-                        borderRadius: "3px",
-                        cursor: "pointer",
-                        marginTop: "10px",
-                      }}
-                    >
-                      Message
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-          {activeChat && (
-            <Message
-              chatPartner={activeChat}
-              onClose={() => setActiveChat(null)}
-            />
-          )}
-        </div>
-      )}
+      {/* Applications */}
+      <Applications
+        applications={applications}
+        onApprove={handleApprove}
+        onReject={handleReject}
+        onMentoringEnd={handleMentoringEnd}
+        uploadedFiles={uploadedFiles}
+        onFileUpload={handleFileUpload}
+        onFileSubmit={handleFileSubmit}
+      />
     </div>
   );
 };
