@@ -584,7 +584,6 @@ const Profile = () => {
           </button>
         </div>
       </div>
-
       {showTestPage && <MentorTestPage onTestComplete={handleTestCompletion} />}
 
       {/* Applications */}

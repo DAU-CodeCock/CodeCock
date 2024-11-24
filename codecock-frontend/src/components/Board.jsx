@@ -81,7 +81,7 @@ const Board = () => {
       alert("Comment cannot be empty.");
       return;
     }
-
+    
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
         post.id === postId
