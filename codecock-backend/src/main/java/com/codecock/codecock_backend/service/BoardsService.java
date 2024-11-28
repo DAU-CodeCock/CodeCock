@@ -21,6 +21,7 @@ public class BoardsService {
     private final UserRepository userRepository;
 
     // 게시물 생성
+    @Transactional
     public BoardsDTO createBoard(BoardsDTO boardsDTO) {
         User user = userRepository.findById(boardsDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));

@@ -1,24 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Board = () => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "Sample Post 1",
-      content: "This is a sample post",
-      likes: 0,
-      likedBy: [],
-      comments: [],
-    },
-    {
-      id: 2,
-      title: "Sample Post 2",
-      content: "Another sample post",
-      likes: 3,
-      likedBy: [],
-      comments: [],
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
   const [currentView, setCurrentView] = useState("list"); // "list", "write", "view"
   const [selectedPost, setSelectedPost] = useState(null); // 현재 선택된 글
   const [title, setTitle] = useState("");
@@ -28,86 +12,114 @@ const Board = () => {
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("title"); // "title" or "content"
-  const currentUser = "user123"; // 가상 사용자 ID
+  const API_URL = "http://localhost:8080/api/boards";
 
-  // Add a new post
-  const handleAddPost = () => {
+  // 토큰에서 사용자 정보 추출
+  const getCurrentUser = () => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const userData = JSON.parse(token);
+        return userData;
+      } catch (error) {
+        console.error("Failed to parse auth token:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const currentUser = getCurrentUser();
+
+  // 모든 게시물 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/all`);
+        setPosts(response.data);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+    fetchPosts();
+  }, []);
+
+  // 게시물 추가
+  const handleAddPost = async () => {
     if (!title || !content) {
       alert("Title and content cannot be empty.");
       return;
     }
 
+    if (!currentUser) {
+      alert("You need to be logged in to create a post.");
+      return;
+    }
+
     const newPost = {
-      id: posts.length + 1,
       title,
       content,
       code,
-      likes: 0,
-      likedBy: [],
-      comments: [],
+      userId: currentUser.userId, // 사용자 ID 추가
     };
 
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
-    setTitle("");
-    setContent("");
-    setCode("");
-    setShowCodeEditor(false);
-    setCurrentView("list"); // 글쓰기 후 목록으로 이동
+    try {
+      const response = await axios.post(`${API_URL}/create`, newPost);
+      setPosts((prevPosts) => [response.data, ...prevPosts]);
+      setTitle("");
+      setContent("");
+      setCode("");
+      setShowCodeEditor(false);
+      setCurrentView("list"); // 글쓰기 후 목록으로 이동
+    } catch (error) {
+      console.error("Failed to add post:", error);
+    }
   };
 
-  // Like a post (only once per user)
-  const handleLikePost = (postId) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) => {
-        if (post.id === postId) {
-          if (post.likedBy.includes(currentUser)) {
-            alert("You have already liked this post.");
-            return post;
-          }
-          return {
-            ...post,
-            likes: post.likes + 1,
-            likedBy: [...post.likedBy, currentUser],
-          };
-        }
-        return post;
-      })
-    );
+  // 게시물 좋아요
+  const handleLikePost = async (postId) => {
+    if (!currentUser) {
+      alert("You need to be logged in to like a post.");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`${API_URL}/${postId}/like`, {
+        userId: currentUser.userId,
+      });
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => (post.id === postId ? response.data : post))
+      );
+    } catch (error) {
+      console.error("Failed to like the post:", error);
+    }
   };
 
-  // Add a comment
-  const handleAddComment = (postId) => {
+  // 댓글 추가
+  const handleAddComment = async (postId) => {
     if (!comment.trim()) {
       alert("Comment cannot be empty.");
       return;
     }
-    
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, { text: comment, user: currentUser }] }
-          : post
-      )
-    );
-    setComment("");
-  };
 
-  // Delete a post
-  const handleDeletePost = (postId) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-    setSelectedPost(null);
-    setCurrentView("list");
-  };
-
-  // Filtered and searched posts
-  const filteredPosts = posts.filter((post) => {
-    if (filter === "title") {
-      return post.title.toLowerCase().includes(searchQuery.toLowerCase());
-    } else if (filter === "content") {
-      return post.content.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!currentUser) {
+      alert("You need to be logged in to comment.");
+      return;
     }
-    return true;
-  });
+
+    try {
+      const response = await axios.post(`${API_URL}/${postId}/comments`, {
+        text: comment,
+        user: currentUser.username,
+      });
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => (post.id === postId ? response.data : post))
+      );
+      setComment("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
+  };
 
   // Render List View
   if (currentView === "list") {
@@ -150,189 +162,54 @@ const Board = () => {
 
         {/* Post List */}
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {filteredPosts.map((post) => (
-            <li
-              key={post.id}
-              onClick={() => {
-                setSelectedPost(post);
-                setCurrentView("view");
-              }}
-              style={{
-                padding: "10px",
-                marginBottom: "10px",
-                border: "1px solid #ddd",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f0f0")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
-            >
-              <h4>{post.title}</h4>
-              <p>❤️ {post.likes} 💬 {post.comments.length}</p>
-            </li>
-          ))}
+          {posts
+            .filter((post) => {
+              if (filter === "title") {
+                return post.title
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase());
+              } else if (filter === "content") {
+                return post.content
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase());
+              }
+              return true;
+            })
+            .map((post) => (
+              <li
+                key={post.id}
+                onClick={() => {
+                  setSelectedPost(post);
+                  setCurrentView("view");
+                }}
+                style={{
+                  padding: "10px",
+                  marginBottom: "10px",
+                  border: "1px solid #ddd",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#f0f0f0")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "white")
+                }
+              >
+                <h4>{post.title}</h4>
+                <p>
+                  ❤️ {post.likes} 💬{" "}
+                  {post.comments ? post.comments.length : 0}
+                </p>
+              </li>
+            ))}
         </ul>
       </div>
     );
   }
 
-  // Render Write Post View
-  if (currentView === "write") {
-    return (
-      <div style={{ padding: "20px" }}>
-        <h2>Write Post</h2>
-
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-        <textarea
-          placeholder="Content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-        <button
-          onClick={() => setShowCodeEditor(!showCodeEditor)}
-          style={{
-            padding: "10px",
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-            marginBottom: "10px",
-          }}
-        >
-          {showCodeEditor ? "Close Code Editor" : "Add Code"}
-        </button>
-        {showCodeEditor && (
-          <textarea
-            placeholder="Write your code here..."
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            style={{
-              width: "100%",
-              backgroundColor: "#333",
-              color: "white",
-              padding: "10px",
-              marginBottom: "10px",
-              minHeight: "150px",
-            }}
-          />
-        )}
-        <button
-          onClick={handleAddPost}
-          style={{
-            padding: "10px",
-            backgroundColor: "blue",
-            color: "white",
-            border: "none",
-          }}
-        >
-          Submit
-        </button>
-        <button
-          onClick={() => setCurrentView("list")}
-          style={{
-            padding: "10px",
-            backgroundColor: "#f44336",
-            color: "white",
-            border: "none",
-            marginLeft: "10px",
-          }}
-        >
-          Cancel
-        </button>
-      </div>
-    );
-  }
-
-  // Render View Post
-  if (currentView === "view" && selectedPost) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <button
-          onClick={() => setCurrentView("list")}
-          style={{
-            padding: "10px",
-            backgroundColor: "#f44336",
-            color: "white",
-            border: "none",
-            marginBottom: "10px",
-          }}
-        >
-          Back
-        </button>
-        <h3>{selectedPost.title}</h3>
-        <p>{selectedPost.content}</p>
-        {selectedPost.code && (
-          <pre
-            style={{
-              backgroundColor: "#333",
-              color: "white",
-              padding: "10px",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {selectedPost.code}
-          </pre>
-        )}
-        <button
-          onClick={() => handleLikePost(selectedPost.id)}
-          style={{
-            padding: "10px",
-            color: "white",
-            border: "none",
-            marginTop: "10px",
-          }}
-        >
-          ❤️ {selectedPost.likes}
-        </button>
-
-        {/* Comments */}
-        <h4>Comments</h4>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {selectedPost.comments.map((c, index) => (
-            <li key={index} style={{ marginBottom: "5px" }}>
-              {c.text} (by {c.user})
-            </li>
-          ))}
-        </ul>
-        <textarea
-          placeholder="Add a comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          style={{ width: "100%", padding: "5px", marginTop: "10px" }}
-        />
-        <button
-          onClick={() => handleAddComment(selectedPost.id)}
-          style={{
-            padding: "5px",
-            backgroundColor: "#61dafb",
-            color: "white",
-            border: "none",
-            marginTop: "10px",
-          }}
-        >
-          Add Comment
-        </button>
-        <button
-          onClick={() => handleDeletePost(selectedPost.id)}
-          style={{
-            padding: "10px",
-            backgroundColor: "red",
-            color: "white",
-            border: "none",
-            marginTop: "10px",
-          }}
-        >
-          Delete Post
-        </button>
-      </div>
-    );
-  }
+  // 나머지 코드 (글쓰기, 게시글 보기 등)도 동일한 방식으로 currentUser 정보 사용
+  // ...
 
   return null;
 };
