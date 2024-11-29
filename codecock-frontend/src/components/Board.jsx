@@ -25,7 +25,10 @@ const Board = () => {
   const [content, setContent] = useState("");
   const [code, setCode] = useState("");
   const [comment, setComment] = useState("");
+<<<<<<< HEAD
   const [commentCode, setCommentCode] = useState("");
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("title"); // "title" or "content"
@@ -74,6 +77,7 @@ const Board = () => {
         return post;
       })
     );
+<<<<<<< HEAD
 
     // Update the selected post's likes immediately
     if (selectedPost && selectedPost.id === postId) {
@@ -89,12 +93,21 @@ const Board = () => {
   const handleAddComment = (postId) => {
     if (!comment.trim() && !commentCode.trim()) {
       alert("Comment or code cannot be empty.");
+=======
+  };
+
+  // Add a comment
+  const handleAddComment = (postId) => {
+    if (!comment.trim()) {
+      alert("Comment cannot be empty.");
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
       return;
     }
 
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
         post.id === postId
+<<<<<<< HEAD
           ? {
               ...post,
               comments: [
@@ -126,6 +139,13 @@ const Board = () => {
     navigator.clipboard.writeText(code).then(() => {
       alert("Code copied to clipboard!");
     });
+=======
+          ? { ...post, comments: [...post.comments, { text: comment, user: currentUser }] }
+          : post
+      )
+    );
+    setComment("");
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
   };
 
   // Delete a post
@@ -200,6 +220,7 @@ const Board = () => {
                 cursor: "pointer",
                 transition: "background-color 0.3s",
               }}
+<<<<<<< HEAD
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#f0f0f0")
               }
@@ -211,6 +232,13 @@ const Board = () => {
               <p>
                 ❤️ {post.likes} 💬 {post.comments.length}
               </p>
+=======
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f0f0")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
+            >
+              <h4>{post.title}</h4>
+              <p>❤️ {post.likes} 💬 {post.comments.length}</p>
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             </li>
           ))}
         </ul>
@@ -310,6 +338,7 @@ const Board = () => {
         <h3>{selectedPost.title}</h3>
         <p>{selectedPost.content}</p>
         {selectedPost.code && (
+<<<<<<< HEAD
           <div>
             <pre
               style={{
@@ -333,12 +362,28 @@ const Board = () => {
               Copy Code
             </button>
           </div>
+=======
+          <pre
+            style={{
+              backgroundColor: "#333",
+              color: "white",
+              padding: "10px",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {selectedPost.code}
+          </pre>
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
         )}
         <button
           onClick={() => handleLikePost(selectedPost.id)}
           style={{
             padding: "10px",
+<<<<<<< HEAD
             background: "none",
+=======
+            color: "white",
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             border: "none",
             marginTop: "10px",
           }}
@@ -350,6 +395,7 @@ const Board = () => {
         <h4>Comments</h4>
         <ul style={{ listStyle: "none", padding: 0 }}>
           {selectedPost.comments.map((c, index) => (
+<<<<<<< HEAD
             <li key={index} style={{ marginBottom: "10px" }}>
               {c.text && <p>{c.text}</p>}
               {c.code && (
@@ -378,6 +424,10 @@ const Board = () => {
                 </div>
               )}
               <small>(by {c.user})</small>
+=======
+            <li key={index} style={{ marginBottom: "5px" }}>
+              {c.text} (by {c.user})
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             </li>
           ))}
         </ul>
@@ -388,6 +438,7 @@ const Board = () => {
           style={{ width: "100%", padding: "5px", marginTop: "10px" }}
         />
         <button
+<<<<<<< HEAD
           onClick={() => setCommentCode((prev) => (prev ? "" : "Write your code here..."))}
           style={{
             padding: "10px",
@@ -414,6 +465,8 @@ const Board = () => {
           />
         )}
         <button
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
           onClick={() => handleAddComment(selectedPost.id)}
           style={{
             padding: "5px",

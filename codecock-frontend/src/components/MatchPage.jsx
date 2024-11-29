@@ -162,12 +162,16 @@ const MatchPage = () => {
                 name="role"
                 value={filters.role}
                 onChange={handleFilterChange}
+<<<<<<< HEAD
                 style={{
                   padding: "10px",
                   flex: 1,
                   borderRadius: "5px",
                   border: "1px solid #ddd",
                 }}
+=======
+                style={{ padding: "10px", flex: 1 }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
               >
                 <option value="">All Roles</option>
                 <option value="Mentor">Mentor</option>
@@ -177,12 +181,16 @@ const MatchPage = () => {
                 name="language"
                 value={filters.language}
                 onChange={handleFilterChange}
+<<<<<<< HEAD
                 style={{
                   padding: "10px",
                   flex: 1,
                   borderRadius: "5px",
                   border: "1px solid #ddd",
                 }}
+=======
+                style={{ padding: "10px", flex: 1 }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
               >
                 <option value="">All Languages</option>
                 <option value="JavaScript">JavaScript</option>
@@ -193,12 +201,16 @@ const MatchPage = () => {
                 name="teachingMethod"
                 value={filters.teachingMethod}
                 onChange={handleFilterChange}
+<<<<<<< HEAD
                 style={{
                   padding: "10px",
                   flex: 1,
                   borderRadius: "5px",
                   border: "1px solid #ddd",
                 }}
+=======
+                style={{ padding: "10px", flex: 1 }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
               >
                 <option value="">All Methods</option>
                 <option value="수업형">수업형</option>
@@ -281,6 +293,7 @@ const MatchPage = () => {
               name="title"
               value={newMatch.title}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -289,6 +302,9 @@ const MatchPage = () => {
                 border: "1px solid #ddd",
                 width: "100%", // 더 넓은 입력 필드
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             />
           </label>
           <label>
@@ -297,6 +313,7 @@ const MatchPage = () => {
               name="description"
               value={newMatch.description}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -306,6 +323,9 @@ const MatchPage = () => {
                 minHeight: "100px",
                 width: "100%", // 더 넓은 텍스트 영역
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             />
           </label>
           <label>
@@ -314,6 +334,7 @@ const MatchPage = () => {
               name="detailedDescription"
               value={newMatch.detailedDescription}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -323,6 +344,9 @@ const MatchPage = () => {
                 minHeight: "100px",
                 width: "100%", // 더 넓은 텍스트 영역
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             />
           </label>
           <label>
@@ -331,6 +355,7 @@ const MatchPage = () => {
               name="role"
               value={newMatch.role}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -339,6 +364,9 @@ const MatchPage = () => {
                 border: "1px solid #ddd",
                 width: "100%", // 더 넓은 선택 필드
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             >
               <option value="">Select Role</option>
               <option value="Mentor">Mentor</option>
@@ -351,6 +379,7 @@ const MatchPage = () => {
               name="language"
               value={newMatch.language}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -359,6 +388,9 @@ const MatchPage = () => {
                 border: "1px solid #ddd",
                 width: "100%", // 더 넓은 선택 필드
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             >
               <option value="">Select Language</option>
               <option value="JavaScript">JavaScript</option>
@@ -372,6 +404,7 @@ const MatchPage = () => {
               name="teachingMethod"
               value={newMatch.teachingMethod}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -380,6 +413,9 @@ const MatchPage = () => {
                 border: "1px solid #ddd",
                 width: "100%", // 더 넓은 선택 필드
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             >
               <option value="">Select Method</option>
               <option value="수업형">수업형</option>
@@ -394,6 +430,7 @@ const MatchPage = () => {
               name="maxApplications"
               value={newMatch.maxApplications}
               onChange={handleNewMatchChange}
+<<<<<<< HEAD
               style={{
                 display: "block",
                 marginBottom: "10px",
@@ -402,6 +439,9 @@ const MatchPage = () => {
                 border: "1px solid #ddd",
                 width: "100%", // 더 넓은 입력 필드
               }}
+=======
+              style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             />
           </label>
           <button
@@ -412,7 +452,10 @@ const MatchPage = () => {
               color: "white",
               border: "none",
               marginRight: "10px",
+<<<<<<< HEAD
               borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             }}
           >
             Save
@@ -424,7 +467,10 @@ const MatchPage = () => {
               backgroundColor: "#f44336",
               color: "white",
               border: "none",
+<<<<<<< HEAD
               borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             }}
           >
             Cancel
@@ -441,7 +487,10 @@ const MatchPage = () => {
               color: "white",
               border: "none",
               marginBottom: "10px",
+<<<<<<< HEAD
               borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
             }}
           >
             Back
@@ -456,6 +505,7 @@ const MatchPage = () => {
                   name="title"
                   value={editableMatch.title}
                   onChange={handleEditableChange}
+<<<<<<< HEAD
                   style={{
                     display: "block",
                     marginBottom: "10px",
@@ -464,6 +514,9 @@ const MatchPage = () => {
                     border: "1px solid #ddd",
                     width: "100%", // 더 넓은 입력 필드
                   }}
+=======
+                  style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 />
               </label>
               <label>
@@ -472,6 +525,7 @@ const MatchPage = () => {
                   name="description"
                   value={editableMatch.description}
                   onChange={handleEditableChange}
+<<<<<<< HEAD
                   style={{
                     display: "block",
                     marginBottom: "10px",
@@ -481,6 +535,9 @@ const MatchPage = () => {
                     minHeight: "100px",
                     width: "100%", // 더 넓은 텍스트 영역
                   }}
+=======
+                  style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 />
               </label>
               <label>
@@ -489,6 +546,7 @@ const MatchPage = () => {
                   name="detailedDescription"
                   value={editableMatch.detailedDescription}
                   onChange={handleEditableChange}
+<<<<<<< HEAD
                   style={{
                     display: "block",
                     marginBottom: "10px",
@@ -498,6 +556,9 @@ const MatchPage = () => {
                     minHeight: "100px",
                     width: "100%", // 더 넓은 텍스트 영역
                   }}
+=======
+                  style={{ display: "block", marginBottom: "10px" }}
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 />
               </label>
               <button
@@ -508,7 +569,10 @@ const MatchPage = () => {
                   color: "white",
                   border: "none",
                   marginRight: "10px",
+<<<<<<< HEAD
                   borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 }}
               >
                 Save
@@ -540,7 +604,10 @@ const MatchPage = () => {
                   border: "none",
                   marginTop: "10px",
                   marginRight: "10px",
+<<<<<<< HEAD
                   borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 }}
               >
                 Apply
@@ -553,7 +620,10 @@ const MatchPage = () => {
                   color: "white",
                   border: "none",
                   marginTop: "10px",
+<<<<<<< HEAD
                   borderRadius: "5px",
+=======
+>>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
                 }}
               >
                 Edit
