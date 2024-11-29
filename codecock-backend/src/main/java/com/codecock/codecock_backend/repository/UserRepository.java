@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
     Optional<User> findByUserId(Integer userId);  // user_num으로 조회하는 메서드 추가
+    Optional<User> findByStudentId(String studentId);
+    Optional<User> findByEmail(String email);
 }

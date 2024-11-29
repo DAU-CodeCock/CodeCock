@@ -25,6 +25,11 @@ const App = () => {
 
   // 현재 페이지 렌더링
   const renderPage = () => {
+    if (!isAuthenticated && currentPage === "profile") {
+      // 로그인이 안 된 상태에서 profile 접근 시 로그인 페이지로 이동
+      return <Login setCurrentPage={setCurrentPage} setIsAuthenticated={setIsAuthenticated} />;
+    }
+    
     switch (currentPage) {
       case 'home':
         return <Main />;

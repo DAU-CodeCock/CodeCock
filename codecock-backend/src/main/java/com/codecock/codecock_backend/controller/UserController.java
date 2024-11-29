@@ -23,6 +23,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -53,17 +54,28 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        System.out.println("Received UserDTO in Controller: " + userDTO);
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+        boolean usernameExists = userService.checkUsernameExists(userDTO.getUsername());
+        boolean studentIdExists = userService.checkStudentIdExists(userDTO.getStudentId());
+        boolean emailExists = userService.checkEmailExists(userDTO.getEmail());
+
+        if (usernameExists || studentIdExists || emailExists) {
+            String errorMessage = "다음 정보가 중복되었습니다: ";
+            if (usernameExists) errorMessage += "username ";
+            if (studentIdExists) errorMessage += "studentId ";
+            if (emailExists) errorMessage += "email";
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage.trim());
+        }
+
+        // 회원가입 처리
         UserDTO createdUser = userService.createUser(userDTO);
-        return ResponseEntity.ok(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PostMapping("/register/checkid")
-    public ResponseEntity<Boolean> checkUser(@RequestBody CheckUserIdRequest request) {
-        UserDTO userDTO = userService.checkUserById(request.getUsername());
-        boolean isAvailable = (userDTO == null);
-        return ResponseEntity.ok(isAvailable);
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<UserDTO> getUserProfile(@PathVariable Integer userId) {
+        UserDTO userDTO = userService.getUserProfile(userId);
+        return userDTO != null ? ResponseEntity.ok(userDTO) : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{userId}")
@@ -109,4 +121,13 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-}
+    // 멘토 승격 엔드포인트 추가
+    @PostMapping("/{userId}/promoteToMentor")
+    public ResponseEntity<String> promoteToMentor(@PathVariable Integer userId) {
+        boolean promoted = userService.promoteToMentor(userId);
+        if (promoted) {
+            return ResponseEntity.status(HttpStatus.OK).body("User promoted to Mentor");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is already a Mentor or cannot be promoted");
+        }    
+    }
