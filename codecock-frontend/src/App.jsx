@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Board from './components/Board';
 import Main from './components/Main';
-<<<<<<< HEAD
 import Profile from './components/Profile/Profile';
-=======
-import Profile from './components/Profile';
->>>>>>> 1d2cc5340cb06782ed302d354835620c658f3c1d
 import MatchPage from './components/MatchPage'; // MatchPage 추가
 
 const App = () => {
