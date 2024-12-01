@@ -11,9 +11,6 @@ const Main = () => {
       <header className="main-header">
         <h1 className="main-title">CodeCock</h1>
         <p className="main-subtitle">Unite. Learn. Grow.</p>
-        <button className="main-button" onClick={handleLogin}>
-          시작하기
-        </button>
       </header>
 
       <section className="main-features">

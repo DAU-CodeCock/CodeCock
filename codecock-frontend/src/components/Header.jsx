@@ -1,21 +1,4 @@
-import React, { useState } from "react";
-
-const Header = ({ setCurrentPage }) => {
-  const [user, setUser] = useState(null);
-
-  // 가상 로그인 핸들러
-  const handleLogin = () => {
-    const mockUser = {
-      displayName: "Guest User",
-    };
-    setUser(mockUser);
-  };
-
-  // 가상 로그아웃 핸들러
-  const handleLogout = () => {
-    setUser(null);
-  };
-
+const Header = ({ setCurrentPage, isLoggedIn, user, handleLogout }) => {
   return (
     <header
       style={{
@@ -27,7 +10,6 @@ const Header = ({ setCurrentPage }) => {
         justifyContent: "space-between",
       }}
     >
-      {/* 왼쪽: 사이트 타이틀 */}
       <h1
         onClick={() => setCurrentPage("home")}
         style={{
@@ -42,7 +24,7 @@ const Header = ({ setCurrentPage }) => {
         CodeCock
       </h1>
 
-      {/* 중앙: 네비게이션 메뉴 */}
+      {/* 네비게이션 메뉴 */}
       <nav>
         <ul
           style={{
@@ -75,9 +57,9 @@ const Header = ({ setCurrentPage }) => {
         </ul>
       </nav>
 
-      {/* 오른쪽: 로그인/로그아웃 */}
+      {/* 로그인/로그아웃 */}
       <div>
-        {user ? (
+        {isLoggedIn && user ? (
           <div
             style={{
               display: "flex",
@@ -85,18 +67,7 @@ const Header = ({ setCurrentPage }) => {
               gap: "10px",
             }}
           >
-            <p
-              style={{
-                margin: 0,
-                cursor: "pointer",
-                transition: "color 0.3s",
-              }}
-              onClick={() => setCurrentPage("mypage")}
-              onMouseOver={(e) => (e.target.style.color = "#61dafb")}
-              onMouseOut={(e) => (e.target.style.color = "white")}
-            >
-              Welcome, {user.displayName}!
-            </p>
+            <span>Welcome, {user.displayName}!</span>
             <button
               onClick={handleLogout}
               style={{
@@ -106,17 +77,14 @@ const Header = ({ setCurrentPage }) => {
                 border: "none",
                 padding: "10px 15px",
                 borderRadius: "5px",
-                transition: "background-color 0.3s",
               }}
-              onMouseOver={(e) => (e.target.style.backgroundColor = "#4dabdb")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#61dafb")}
             >
               Logout
             </button>
           </div>
         ) : (
           <button
-            onClick={handleLogin}
+            onClick={() => setCurrentPage("login")}
             style={{
               cursor: "pointer",
               background: "#61dafb",
@@ -124,10 +92,7 @@ const Header = ({ setCurrentPage }) => {
               border: "none",
               padding: "10px 15px",
               borderRadius: "5px",
-              transition: "background-color 0.3s",
             }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#4dabdb")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#61dafb")}
           >
             Login
           </button>

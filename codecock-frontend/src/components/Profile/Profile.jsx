@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Applications from './Applications';
 import MentorTestPage from './MentorTestPage';
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [formData, setFormData] = useState({
     displayName: 'Default User',
     email: 'defaultuser@example.com',
@@ -18,6 +18,18 @@ const Profile = () => {
   ]);
 
   const [uploadedFiles, setUploadedFiles] = useState({});
+
+  // 사용자 정보가 변경되면 formData를 업데이트
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        displayName: user.displayName || 'Default User',
+        email: user.email || 'defaultuser@example.com',
+        role: user.role || 'mentee',
+        bio: user.bio || 'This is a default bio.',
+      });
+    }
+  }, [user]);
 
   const handleTestCompletion = (passed) => {
     console.log('Test Completed:', passed);

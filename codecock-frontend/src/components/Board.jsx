@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Board = () => {
+const Board = ({ currentUser }) => {
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -29,7 +29,6 @@ const Board = () => {
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("title"); // "title" or "content"
-  const currentUser = "user123"; // 가상 사용자 ID
 
   // Add a new post
   const handleAddPost = () => {
@@ -200,12 +199,7 @@ const Board = () => {
                 cursor: "pointer",
                 transition: "background-color 0.3s",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = "#f0f0f0")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = "white")
-              }
+            
             >
               <h4>{post.title}</h4>
               <p>
