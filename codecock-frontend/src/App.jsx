@@ -2,45 +2,43 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Board from './components/Board';
 import Main from './components/Main';
-import Profile from './components/Profile';
+import Profile from './components/Profile/Profile';
 import MatchPage from './components/MatchPage';
-import Login from './components/Login'; // Login 컴포넌트 추가
+import LoginSignup from './components/Login/Login';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // 초기 상태는 로그아웃
-  const [currentPage, setCurrentPage] = useState('home'); // 초기 페이지는 메인 페이지
+  const [currentPage, setCurrentPage] = useState('home'); // 현재 페이지 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [user, setUser] = useState(null); // 로그인된 사용자 정보
 
-  // 로그인 성공 후 처리 함수
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-    setCurrentPage('home'); // 로그인 성공 시 홈 페이지로 이동
+  // 로그인 성공 처리
+  const handleLoginSuccess = (loggedInUser) => {
+    setIsLoggedIn(true);
+    setUser(loggedInUser); // 사용자 정보 저장
+    setCurrentPage('home'); // 로그인 성공 시 메인 화면으로 전환
   };
 
-  // 로그아웃 처리 함수
+  // 로그아웃 처리
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentPage('home'); // 로그아웃 후 홈 페이지로 이동
-    localStorage.removeItem("authToken"); // 로그아웃 시 토큰 삭제
+    setIsLoggedIn(false);
+    setUser(null); // 사용자 정보 초기화
+    setCurrentPage('home'); // 로그아웃 후 메인 화면으로 전환
   };
 
-  // 현재 페이지 렌더링
+  // 페이지 렌더링
   const renderPage = () => {
-    if (!isAuthenticated && currentPage === "profile") {
-      // 로그인이 안 된 상태에서 profile 접근 시 로그인 페이지로 이동
-      return <Login setCurrentPage={setCurrentPage} setIsAuthenticated={setIsAuthenticated} />;
+    if (currentPage === 'login') {
+      return <LoginSignup onLoginSuccess={handleLoginSuccess} />;
     }
-    
     switch (currentPage) {
       case 'home':
         return <Main />;
       case 'board':
-        return <Board />;
+        return <Board currentUser={user.username} />;
       case 'mypage':
-        return <Profile />;
+        return <Profile user={user} />; // Profile에 사용자 정보 전달
       case 'match':
         return <MatchPage />;
-      case 'login':
-        return <Login onLoginSuccess={handleLoginSuccess} />;
       default:
         return <Main />;
     }
@@ -48,11 +46,11 @@ const App = () => {
 
   return (
     <div>
-      {/* 로그인 상태에 따라 Header 표시 */}
       <Header
         setCurrentPage={setCurrentPage}
-        isAuthenticated={isAuthenticated}
-        onLogout={handleLogout}
+        isLoggedIn={isLoggedIn}
+        user={user}
+        handleLogout={handleLogout}
       />
       {renderPage()}
     </div>

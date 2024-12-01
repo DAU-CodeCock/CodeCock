@@ -162,7 +162,12 @@ const MatchPage = () => {
                 name="role"
                 value={filters.role}
                 onChange={handleFilterChange}
-                style={{ padding: "10px", flex: 1 }}
+                style={{
+                  padding: "10px",
+                  flex: 1,
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                }}
               >
                 <option value="">All Roles</option>
                 <option value="Mentor">Mentor</option>
@@ -172,7 +177,12 @@ const MatchPage = () => {
                 name="language"
                 value={filters.language}
                 onChange={handleFilterChange}
-                style={{ padding: "10px", flex: 1 }}
+                style={{
+                  padding: "10px",
+                  flex: 1,
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                }}
               >
                 <option value="">All Languages</option>
                 <option value="JavaScript">JavaScript</option>
@@ -183,7 +193,12 @@ const MatchPage = () => {
                 name="teachingMethod"
                 value={filters.teachingMethod}
                 onChange={handleFilterChange}
-                style={{ padding: "10px", flex: 1 }}
+                style={{
+                  padding: "10px",
+                  flex: 1,
+                  borderRadius: "5px",
+                  border: "1px solid #ddd",
+                }}
               >
                 <option value="">All Methods</option>
                 <option value="수업형">수업형</option>
@@ -266,7 +281,14 @@ const MatchPage = () => {
               name="title"
               value={newMatch.title}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                width: "100%", // 더 넓은 입력 필드
+              }}
             />
           </label>
           <label>
@@ -275,7 +297,15 @@ const MatchPage = () => {
               name="description"
               value={newMatch.description}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                minHeight: "100px",
+                width: "100%", // 더 넓은 텍스트 영역
+              }}
             />
           </label>
           <label>
@@ -284,7 +314,15 @@ const MatchPage = () => {
               name="detailedDescription"
               value={newMatch.detailedDescription}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                minHeight: "100px",
+                width: "100%", // 더 넓은 텍스트 영역
+              }}
             />
           </label>
           <label>
@@ -293,7 +331,14 @@ const MatchPage = () => {
               name="role"
               value={newMatch.role}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                width: "100%", // 더 넓은 선택 필드
+              }}
             >
               <option value="">Select Role</option>
               <option value="Mentor">Mentor</option>
@@ -306,7 +351,14 @@ const MatchPage = () => {
               name="language"
               value={newMatch.language}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                width: "100%", // 더 넓은 선택 필드
+              }}
             >
               <option value="">Select Language</option>
               <option value="JavaScript">JavaScript</option>
@@ -320,7 +372,14 @@ const MatchPage = () => {
               name="teachingMethod"
               value={newMatch.teachingMethod}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                width: "80%", // 더 넓은 선택 필드
+              }}
             >
               <option value="">Select Method</option>
               <option value="수업형">수업형</option>
@@ -335,7 +394,14 @@ const MatchPage = () => {
               name="maxApplications"
               value={newMatch.maxApplications}
               onChange={handleNewMatchChange}
-              style={{ display: "block", marginBottom: "10px" }}
+              style={{
+                display: "block",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ddd",
+                width: "80%", // 더 넓은 입력 필드
+              }}
             />
           </label>
           <button
@@ -346,6 +412,7 @@ const MatchPage = () => {
               color: "white",
               border: "none",
               marginRight: "10px",
+              borderRadius: "5px",
             }}
           >
             Save
@@ -357,6 +424,7 @@ const MatchPage = () => {
               backgroundColor: "#f44336",
               color: "white",
               border: "none",
+              borderRadius: "5px",
             }}
           >
             Cancel
@@ -373,6 +441,7 @@ const MatchPage = () => {
               color: "white",
               border: "none",
               marginBottom: "10px",
+              borderRadius: "5px",
             }}
           >
             Back
@@ -387,7 +456,14 @@ const MatchPage = () => {
                   name="title"
                   value={editableMatch.title}
                   onChange={handleEditableChange}
-                  style={{ display: "block", marginBottom: "10px" }}
+                  style={{
+                    display: "block",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ddd",
+                    width: "80%", // 더 넓은 입력 필드
+                  }}
                 />
               </label>
               <label>
@@ -396,7 +472,15 @@ const MatchPage = () => {
                   name="description"
                   value={editableMatch.description}
                   onChange={handleEditableChange}
-                  style={{ display: "block", marginBottom: "10px" }}
+                  style={{
+                    display: "block",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ddd",
+                    minHeight: "100px",
+                    width: "80%", // 더 넓은 텍스트 영역
+                  }}
                 />
               </label>
               <label>
@@ -405,7 +489,15 @@ const MatchPage = () => {
                   name="detailedDescription"
                   value={editableMatch.detailedDescription}
                   onChange={handleEditableChange}
-                  style={{ display: "block", marginBottom: "10px" }}
+                  style={{
+                    display: "block",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ddd",
+                    minHeight: "100px",
+                    width: "100%", // 더 넓은 텍스트 영역
+                  }}
                 />
               </label>
               <button
@@ -416,6 +508,7 @@ const MatchPage = () => {
                   color: "white",
                   border: "none",
                   marginRight: "10px",
+                  borderRadius: "5px",
                 }}
               >
                 Save
@@ -447,6 +540,7 @@ const MatchPage = () => {
                   border: "none",
                   marginTop: "10px",
                   marginRight: "10px",
+                  borderRadius: "5px",
                 }}
               >
                 Apply
@@ -459,6 +553,7 @@ const MatchPage = () => {
                   color: "white",
                   border: "none",
                   marginTop: "10px",
+                  borderRadius: "5px",
                 }}
               >
                 Edit
