@@ -62,10 +62,16 @@ const Header = ({ setCurrentPage, isLoggedIn, user, handleLogout }) => {
         {isLoggedIn && user ? (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
+              cursor: "pointer",
+              background: "#61dafb",
+              color: "white",
+              border: "none",
+              padding: "10px 15px",
+              borderRadius: "5px",
+              transition: "background-color 0.3s",
             }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#4dabdb")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#61dafb")}
           >
             <span>Welcome, {user.displayName}!</span>
             <button
