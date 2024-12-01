@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 // MessagePopup Component
 const MessagePopup = (chatPartner) => {
@@ -367,10 +366,7 @@ const MentorTestPage = ({ onTestComplete }) => {
 const Profile = () => {
   const [formData, setFormData] = useState({
     displayName: "Default User",
-    name: "Kim",
-    studentId: "2000000",
     email: "defaultuser@example.com",
-    phone: "010-1234-5678",
     role: "mentee",
     bio: "This is a default bio.",
   });
@@ -416,7 +412,7 @@ const Profile = () => {
       )
     );
   };
-  
+
   const handleMentoringEnd = (id) => {
     setApplications((prev) =>
       prev.map((app) =>
@@ -473,44 +469,6 @@ const Profile = () => {
               />
             </label>
             <label style={{ display: "block", marginBottom: "10px" }}>
-              Name:
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-                style={{
-                  marginLeft: "10px",
-                  padding: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                }}
-              />
-            </label>
-            <label style={{ display: "block", marginBottom: "10px" }}>
-              Student Id:
-              <input
-                type="text"
-                value={formData.studentId}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    studentId: e.target.value,
-                  }))
-                }
-                style={{
-                  marginLeft: "10px",
-                  padding: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                }}
-              />
-            </label>
-            <label style={{ display: "block", marginBottom: "10px" }}>
               Email:
               <input
                 type="email"
@@ -519,25 +477,6 @@ const Profile = () => {
                   setFormData((prev) => ({
                     ...prev,
                     email: e.target.value,
-                  }))
-                }
-                style={{
-                  marginLeft: "10px",
-                  padding: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                }}
-              />
-            </label>
-            <label style={{ display: "block", marginBottom: "10px" }}>
-              Phone:
-              <input
-                type="text"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    phone: e.target.value,
                   }))
                 }
                 style={{
@@ -587,16 +526,7 @@ const Profile = () => {
               <strong>Display Name:</strong> {formData.displayName}
             </p>
             <p>
-              <strong>Name:</strong> {formData.name}
-            </p>
-            <p>
-              <strong>Student Id:</strong> {formData.studentId}
-            </p>
-            <p>
               <strong>Email:</strong> {formData.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {formData.phone}
             </p>
             <p>
               <strong>Bio:</strong> {formData.bio}
@@ -654,6 +584,7 @@ const Profile = () => {
           </button>
         </div>
       </div>
+
       {showTestPage && <MentorTestPage onTestComplete={handleTestCompletion} />}
 
       {/* Applications */}

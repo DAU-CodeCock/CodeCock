@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 const Board = ({ currentUser }) => {
   const [posts, setPosts] = useState([
@@ -31,36 +30,29 @@ const Board = ({ currentUser }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("title"); // "title" or "content"
 
-  // 게시물 추가
-  const handleAddPost = async () => {
+  // Add a new post
+  const handleAddPost = () => {
     if (!title || !content) {
       alert("Title and content cannot be empty.");
       return;
     }
 
-    if (!currentUser) {
-      alert("You need to be logged in to create a post.");
-      return;
-    }
-
     const newPost = {
+      id: posts.length + 1,
       title,
       content,
       code,
-      userId: currentUser.userId, // 사용자 ID 추가
+      likes: 0,
+      likedBy: [],
+      comments: [],
     };
 
-    try {
-      const response = await axios.post(`${API_URL}/create`, newPost);
-      setPosts((prevPosts) => [response.data, ...prevPosts]);
-      setTitle("");
-      setContent("");
-      setCode("");
-      setShowCodeEditor(false);
-      setCurrentView("list"); // 글쓰기 후 목록으로 이동
-    } catch (error) {
-      console.error("Failed to add post:", error);
-    }
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+    setTitle("");
+    setContent("");
+    setCode("");
+    setShowCodeEditor(false);
+    setCurrentView("list"); // 글쓰기 후 목록으로 이동
   };
 
   // Like a post (only once per user)
@@ -142,19 +134,15 @@ const Board = ({ currentUser }) => {
     setCurrentView("list");
   };
 
-    try {
-      const response = await axios.post(`${API_URL}/${postId}/comments`, {
-        text: comment,
-        user: currentUser.username,
-      });
-      setPosts((prevPosts) =>
-        prevPosts.map((post) => (post.id === postId ? response.data : post))
-      );
-      setComment("");
-    } catch (error) {
-      console.error("Failed to add comment:", error);
+  // Filtered and searched posts
+  const filteredPosts = posts.filter((post) => {
+    if (filter === "title") {
+      return post.title.toLowerCase().includes(searchQuery.toLowerCase());
+    } else if (filter === "content") {
+      return post.content.toLowerCase().includes(searchQuery.toLowerCase());
     }
-  };
+    return true;
+  });
 
   // Render List View
   if (currentView === "list") {

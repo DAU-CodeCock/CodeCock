@@ -3,10 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DAU_CodeCock.iml" filepath="$PROJECT_DIR$/.idea/DAU_CodeCock.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/codecock-backend.iml" filepath="$PROJECT_DIR$/.idea/modules/codecock-backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/codecock-backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/codecock-backend.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/codecock-backend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/codecock-backend.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.codecock.codecock-backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.codecock.codecock-backend.main.iml" />
     </modules>
   </component>
 </project>
